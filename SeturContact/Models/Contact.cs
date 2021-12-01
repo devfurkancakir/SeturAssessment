@@ -8,6 +8,6 @@ namespace SeturContact.Models
 
         public string? Lastname { get; set; }
 
-        public List<ContactInfo> Informations{ get; set; }=new List<ContactInfo>(); 
+        public List<ContactInformation> Informations { get; set; } = new List<ContactInformation>();
     }
 }

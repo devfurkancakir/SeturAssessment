@@ -1,4 +1,4 @@
-namespace SeturContact.Models
+namespace SeturReport.Models
 {
     public class ReportResponse
     {

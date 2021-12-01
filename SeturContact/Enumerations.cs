@@ -2,11 +2,11 @@ namespace SeturContact
 {
     public enum ContactInformationType
     {
-        Phone=10,
+        Phone = 10,
 
-        Email=20,
-        
-        Location=30
+        Email = 20,
+
+        Location = 30
     }
 
     public enum ResponseType
