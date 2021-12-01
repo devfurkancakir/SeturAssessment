@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeturReport", "SeturReport\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeturContactApp", "SeturContactApp\SeturContactApp.csproj", "{36561B94-186E-4012-BE6C-CA278B350E72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeturTest", "SeturTest\SeturTest.csproj", "{DFB55096-5EC6-4515-A584-366AE1A484CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{36561B94-186E-4012-BE6C-CA278B350E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36561B94-186E-4012-BE6C-CA278B350E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36561B94-186E-4012-BE6C-CA278B350E72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB55096-5EC6-4515-A584-366AE1A484CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB55096-5EC6-4515-A584-366AE1A484CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB55096-5EC6-4515-A584-366AE1A484CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB55096-5EC6-4515-A584-366AE1A484CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

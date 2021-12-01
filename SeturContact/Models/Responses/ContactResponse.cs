@@ -1,6 +1,6 @@
-namespace SeturContact.Models
+namespace SeturContact.Models.Responses
 {
-    public class ContactResponse
+    public class ContactResponse<T>
     {
         public ResponseType Type { get; set; }
 
@@ -8,6 +8,6 @@ namespace SeturContact.Models
 
         public List<string> Errors { get; set; } = new List<string>();
 
-        public List<Contact> Result { get; set; } = new List<Contact>();
+        public List<T> Result { get; set; } = new List<T>();
     }
 }

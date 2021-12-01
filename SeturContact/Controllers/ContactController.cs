@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SeturContact.Models;
+using SeturContact.Models.Queries;
+using SeturContact.Models.Responses;
 
 namespace SeturContact.Controllers
 {
@@ -15,31 +18,34 @@ namespace SeturContact.Controllers
         }
 
         [HttpGet]
-        public ContactResponse GetContacts(int contactId)
+        [Route("get")]
+        public ContactResponse<Contact> GetContacts(ContactQuery query)
         {
-            var contact = new Contact();
-
             try
             {
 
                 using (var ctx = new ContactDbContext())
                 {
-                    contact = ctx.Contacts.Find(contactId);
+                    IQueryable<Contact>  contacts = ctx.Contacts.Where(c=>query.ContactIds.Contains(c.ContactId));
 
-                    ctx.SaveChanges();
+                    foreach (var include in query.Includes)
+                    {
+                        contacts= contacts.Include(include);
+                    }
+
+                    return new ContactResponse<Contact>() { Result = contacts.ToList(), Type = ResponseType.Succes };
                 }
             }
             catch (Exception ex)
             {
 
-                return new ContactResponse { ErrorMessage = ex.Message, Type = ResponseType.Error };
+                return new ContactResponse<Contact> { ErrorMessage = ex.Message, Type = ResponseType.Error };
             }
-
-            return new ContactResponse() { Result = new List<Contact>() { contact }, Type = ResponseType.Succes };
         }
 
-        [HttpGet]
-        public ContactResponse CreateContact(Contact contact)
+        [HttpPost]
+        [Route("create")]
+        public ContactResponse<Contact> CreateContact(Contact contact)
         {
             try
             {
@@ -50,17 +56,18 @@ namespace SeturContact.Controllers
                     ctx.SaveChanges();
                 }
 
-                return new ContactResponse() { Result = new List<Contact>() { contact }, Type = ResponseType.Succes };
+                return new ContactResponse<Contact>() { Result = new List<Contact>() { contact }, Type = ResponseType.Succes };
             }
             catch (Exception ex)
             {
 
-                return new ContactResponse { ErrorMessage = ex.Message, Type = ResponseType.Error };
+                return new ContactResponse<Contact> { ErrorMessage = ex.Message, Type = ResponseType.Error };
             }
         }
 
-        [HttpGet]
-        public ContactResponse UpdateContact(Contact contact)
+        [HttpPost]
+        [Route("update")]
+        public ContactResponse<Contact> UpdateContact(Contact contact)
         {
             try
             {
@@ -71,17 +78,18 @@ namespace SeturContact.Controllers
                     ctx.SaveChanges();
                 }
 
-                return new ContactResponse() { Result = new List<Contact>() { contact }, Type = ResponseType.Succes };
+                return new ContactResponse<Contact>() { Result = new List<Contact>() { contact }, Type = ResponseType.Succes };
             }
             catch (Exception ex)
             {
 
-                return new ContactResponse { ErrorMessage = ex.Message, Type = ResponseType.Error };
+                return new ContactResponse<Contact> { ErrorMessage = ex.Message, Type = ResponseType.Error };
             }
         }
 
-        [HttpGet]
-        public ContactResponse DeleteContact(Contact contact)
+        [HttpPost]
+        [Route("delete")]
+        public ContactResponse<Contact> DeleteContact(Contact contact)
         {
             try
             {
@@ -92,12 +100,114 @@ namespace SeturContact.Controllers
                     ctx.SaveChanges();
                 }
 
-                return new ContactResponse() { Result = new List<Contact>() { contact }, Type = ResponseType.Succes };
+                return new ContactResponse<Contact>() { Result = new List<Contact>() { contact }, Type = ResponseType.Succes };
             }
             catch (Exception ex)
             {
 
-                return new ContactResponse { ErrorMessage = ex.Message, Type = ResponseType.Error };
+                return new ContactResponse<Contact> { ErrorMessage = ex.Message, Type = ResponseType.Error };
+            }
+        }
+
+        [HttpGet]
+        [Route("info/get")]
+        public ContactResponse<ContactInformation> GetContactInformations(ContactInformationQuery query)
+        {
+            try
+            {
+
+                using (var ctx = new ContactDbContext())
+                {
+                    IQueryable<ContactInformation> contactInfos = ctx.ContactInformations;
+
+                    if (query.ContactIds.Any())
+                    {
+                        contactInfos= contactInfos.Where(c => query.ContactIds.Contains(c.ContactId));
+                    }
+
+                    if (query.InformationIds.Any())
+                    {
+                        contactInfos = contactInfos.Where(c => query.InformationIds.Contains(c.ContactInformationId));
+                    }
+
+                    foreach (var include in query.Includes)
+                    {
+                        contactInfos = contactInfos.Include(include);
+                    }
+
+                    return new ContactResponse<ContactInformation>() { Result = contactInfos.ToList(), Type = ResponseType.Succes };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new ContactResponse<ContactInformation> { ErrorMessage = ex.Message, Type = ResponseType.Error };
+            }
+        }
+
+        [HttpPost]
+        [Route("info/create")]
+        public ContactResponse<ContactInformation> CreateContactInformation(ContactInformation info)
+        {
+            try
+            {
+                using (var ctx = new ContactDbContext())
+                {
+                    ctx.ContactInformations.Add(info);
+
+                    ctx.SaveChanges();
+                }
+
+                return new ContactResponse<ContactInformation>() { Result = new List<ContactInformation>() { info }, Type = ResponseType.Succes };
+            }
+            catch (Exception ex)
+            {
+
+                return new ContactResponse<ContactInformation> { ErrorMessage = ex.Message, Type = ResponseType.Error };
+            }
+        }
+
+        [HttpPost]
+        [Route("info/update")]
+        public ContactResponse<ContactInformation> UpdateContactInformation(ContactInformation info)
+        {
+            try
+            {
+                using (var ctx = new ContactDbContext())
+                {
+                    ctx.ContactInformations.Update(info);
+
+                    ctx.SaveChanges();
+                }
+
+                return new ContactResponse<ContactInformation>() { Result = new List<ContactInformation>() { info }, Type = ResponseType.Succes };
+            }
+            catch (Exception ex)
+            {
+
+                return new ContactResponse<ContactInformation> { ErrorMessage = ex.Message, Type = ResponseType.Error };
+            }
+        }
+
+        [HttpPost]
+        [Route("info/delete")]
+        public ContactResponse<ContactInformation> DeleteContactInformation(ContactInformation info)
+        {
+            try
+            {
+                using (var ctx = new ContactDbContext())
+                {
+                    ctx.ContactInformations.Remove(info);
+
+                    ctx.SaveChanges();
+                }
+
+                return new ContactResponse<ContactInformation>() { Type = ResponseType.Succes };
+            }
+            catch (Exception ex)
+            {
+
+                return new ContactResponse<ContactInformation> { ErrorMessage = ex.Message, Type = ResponseType.Error };
             }
         }
     }
