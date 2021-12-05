@@ -1,4 +1,6 @@
-﻿@{
+﻿@model SeturContactApp.Models.ViewModels.ContactViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -8,5 +10,4 @@
 </div>
 
 
-<a href="/contacts">Rehber</a>
-<a href="/reports">Raporlar</a>
+İsim @Model.Firstname
